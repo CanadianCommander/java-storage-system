@@ -3,10 +3,8 @@ package ca.bbenetti.jss.model;
 import ca.bbenetti.jss.Resource;
 
 import java.io.ByteArrayInputStream;
-import java.net.URI;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Optional;
 import java.util.UUID;
 
 public class BinaryResource implements Resource
@@ -14,6 +12,7 @@ public class BinaryResource implements Resource
 	protected UUID id;
 	protected String name;
 	protected byte[] data;
+	protected boolean publicResource = false;
 
 	// ==========================================================================
 	// Public Methods
@@ -21,14 +20,20 @@ public class BinaryResource implements Resource
 
 	public BinaryResource(String name, byte[] data)
 	{
-		this(UUID.randomUUID(), name, data);
+		this(UUID.randomUUID(), name, data, false);
 	}
 
 	public BinaryResource(UUID id, String name, byte[] data)
 	{
+		this(id, name, data, false);
+	}
+
+	public BinaryResource(UUID id, String name, byte[] data, boolean publicResource)
+	{
 		this.id = id;
 		this.name = name;
 		this.data = data;
+		this.publicResource = publicResource;
 	}
 
 	// ==========================================================================
@@ -54,8 +59,8 @@ public class BinaryResource implements Resource
 	}
 
 	@Override
-	public Optional<URI> getURI()
+	public boolean isPublic()
 	{
-		return Optional.empty();
+		return this.publicResource;
 	}
 }

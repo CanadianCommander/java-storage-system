@@ -53,6 +53,19 @@ public class FileSystemStorageProvider implements StorageProvider
 		return this.getResource(resource.getId());
 	}
 
+	@Override
+	public void deleteResource(UUID resourceId)
+	{
+		try
+		{
+			Files.delete(FsUtil.resourceIdToPath(this.fsBasePath, resourceId));
+		}
+		catch (IOException e)
+		{
+			throw new FileIOException(String.format("Failed to delete resource [%s] with error: %s", resourceId, e.getMessage()), e);
+		}
+	}
+
 	// ==========================================================================
 	// Protected Methods
 	// ==========================================================================

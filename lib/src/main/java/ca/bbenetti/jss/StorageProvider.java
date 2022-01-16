@@ -24,6 +24,7 @@ public interface StorageProvider
 	 * @throws ca.bbenetti.jss.exception.StorageBackendException if an error occurs with the storage backend
 	 */
 	public boolean resourceExists(UUID resourceId);
+	default boolean resourceExists(Resource resource) { return this.resourceExists(resource.getId()); }
 
 	/**
 	 * save a resource to the underlying storage
@@ -32,4 +33,11 @@ public interface StorageProvider
 	 * @throws ca.bbenetti.jss.exception.StorageBackendException if an error occurs with the storage backend
 	 */
 	public Resource saveResource(Resource resource);
+
+	/**
+	 * delete the resource with the given id
+	 * @param resourceId - the id of the resource to delete
+	 */
+	public void deleteResource(UUID resourceId);
+	default void deleteResource(Resource resource) { this.deleteResource(resource.getId()); }
 }

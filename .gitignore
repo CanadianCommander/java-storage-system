@@ -6,3 +6,6 @@ build
 
 # Ignore intellij
 .idea
+
+# Testing environment file
+/test/testing.env

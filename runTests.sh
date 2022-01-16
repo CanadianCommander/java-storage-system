@@ -1,4 +1,5 @@
 #!/bin/bash
+pushd $(dirname $0) || exit 1
 
 # check for image. build if it doesn't exist
 sudo -E docker image inspect jss-test-runner > /dev/null
@@ -13,4 +14,9 @@ if (( $? == 0)); then
 fi
 
 # start testing container
-sudo -E docker run -v $(pwd):/opt/source --name jss-test-runner-1 jss-test-runner
+sudo -E docker run -v $(pwd):/opt/source \
+ --name jss-test-runner-1 \
+ --env-file test/testing.env \
+ jss-test-runner
+
+popd || exit 1

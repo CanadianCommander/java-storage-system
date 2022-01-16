@@ -60,7 +60,7 @@ public class FileResource implements Resource
 	}
 
 	@Override
-	public Optional<URI> getURI()
+	public Optional<URI> getPermanentURI()
 	{
 		return Optional.of(this.filePath.toUri());
 	}
