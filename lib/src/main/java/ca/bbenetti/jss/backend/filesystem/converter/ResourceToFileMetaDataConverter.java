@@ -13,6 +13,6 @@ public class ResourceToFileMetaDataConverter implements Converter<Resource, File
 	@Override
 	public FileMetaData convert(Resource from)
 	{
-		return new FileMetaData(from.getName());
+		return new FileMetaData(from.getName(), from.getMediaType());
 	}
 }

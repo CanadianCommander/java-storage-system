@@ -7,6 +7,7 @@ import ca.bbenetti.jss.converter.Converter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.minio.StatObjectResponse;
+import com.google.common.net.MediaType;
 
 import java.util.stream.Collectors;
 
@@ -21,7 +22,9 @@ public class StatObjectResponseToS3ResourceMetadataConverter implements Converte
 	{
 		try
 		{
-			return (new ObjectMapper()).readValue(from.userMetadata().get(S3StorageProvider.S3_RESOURCE_METADATA_KEY), S3ResourceMetadata.class);
+			S3ResourceMetadata metadata = (new ObjectMapper()).readValue(from.userMetadata().get(S3StorageProvider.S3_RESOURCE_METADATA_KEY), S3ResourceMetadata.class);
+			metadata.setMediaType(from.contentType());
+			return metadata;
 		}
 		catch (JsonProcessingException e)
 		{

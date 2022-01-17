@@ -2,6 +2,7 @@ package ca.bbenetti.jss.backend.s3;
 
 import ca.bbenetti.jss.Resource;
 import ca.bbenetti.jss.model.BinaryResource;
+import com.google.common.net.MediaType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.ZonedDateTime;
@@ -122,6 +122,27 @@ public class S3StorageProviderTest
 				                         testBytes,
 				                         inputStream.readAllBytes());
 			}
+		}
+		finally
+		{
+			this.storageProvider.deleteResource(testResource.getId());
+		}
+	}
+
+	@Test
+	public void mimeTypeIsPreserved() throws IOException
+	{
+		String resourceName = "TestResource";
+		String testFileContent = "<h1>HELLO WORLD</h1>";
+		BinaryResource testResource = new BinaryResource(resourceName, testFileContent.getBytes(StandardCharsets.UTF_8), MediaType.HTML_UTF_8.toString());
+
+		try
+		{
+			this.storageProvider.saveResource(testResource);
+
+			Resource readFromS3 = this.storageProvider.getResource(testResource.getId());
+			Assert.assertEquals("Expect data read from S3 to be what was written", testFileContent, new String(readFromS3.getDataAsBytes(), StandardCharsets.UTF_8));
+			Assert.assertEquals("Expect media type to be html", MediaType.HTML_UTF_8.toString(), readFromS3.getMediaType());
 		}
 		finally
 		{

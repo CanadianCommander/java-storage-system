@@ -3,6 +3,7 @@ package ca.bbenetti.jss.backend.filesystem;
 import ca.bbenetti.jss.Resource;
 import ca.bbenetti.jss.backend.filesystem.exception.FileIOException;
 import ca.bbenetti.jss.backend.filesystem.model.FileMetaData;
+import com.google.common.net.MediaType;
 
 import java.io.IOException;
 import java.net.URI;
@@ -44,6 +45,12 @@ public class FileResource implements Resource
 	{
 
 		return this.fileMetaData.getResourceName();
+	}
+
+	@Override
+	public String getMediaType()
+	{
+		return this.fileMetaData.getMediaType();
 	}
 
 	@Override

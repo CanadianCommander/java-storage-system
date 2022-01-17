@@ -107,6 +107,7 @@ public class S3StorageProvider implements StorageProvider
 			                                        .bucket(this.storageBucket)
 			                                        .object(S3Util.resourceIdToS3Path(this.storagePathBase, resource.getId()))
 			                                        .stream(Channels.newInputStream(resource.getData()), -1, S3_PART_SIZE)
+			                                        .contentType(resource.getMediaType())
 			                                        .userMetadata(Map.of(S3_RESOURCE_METADATA_KEY, (new ObjectMapper()).writeValueAsString((new ResourceToS3ResourceMetadataConverter()).convert(resource))))
 			                                        .build());
 		}

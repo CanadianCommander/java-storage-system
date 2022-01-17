@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class FileMetaData
 {
 	protected String resourceName;
+	protected String mediaType;
 }

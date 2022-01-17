@@ -13,6 +13,6 @@ public class ResourceToS3ResourceMetadataConverter implements Converter<Resource
 	@Override
 	public S3ResourceMetadata convert(Resource from)
 	{
-		return new S3ResourceMetadata(from.getName());
+		return new S3ResourceMetadata(from.getName(), from.getMediaType());
 	}
 }

@@ -1,5 +1,6 @@
 package ca.bbenetti.jss;
 
+import com.google.common.net.MediaType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,6 +37,15 @@ public interface Resource
 	 * @return - the name
 	 */
 	public String getName();
+
+	/**
+	 * get the mime type for this resource
+	 * @return - the mime type of this resource
+	 */
+	default String getMediaType()
+	{
+		return MediaType.OCTET_STREAM.toString();
+	}
 
 	/**
 	 * is this resource publicly accessible or not? (access over the internet without credentials?)

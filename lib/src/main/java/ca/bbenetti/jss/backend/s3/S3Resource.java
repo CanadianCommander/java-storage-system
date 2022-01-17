@@ -58,6 +58,12 @@ public class S3Resource implements Resource
 	}
 
 	@Override
+	public String getMediaType()
+	{
+		return this.metadata.getMediaType();
+	}
+
+	@Override
 	public ReadableByteChannel getData()
 	{
 		return Channels.newChannel(this.inputStreamSupplier.get());

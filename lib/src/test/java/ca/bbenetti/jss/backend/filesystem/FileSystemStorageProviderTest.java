@@ -4,6 +4,7 @@ import ca.bbenetti.jss.Resource;
 import ca.bbenetti.jss.backend.filesystem.model.FileMetaData;
 import ca.bbenetti.jss.model.BinaryResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.MediaType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,7 +81,7 @@ public class FileSystemStorageProviderTest
 		// write test file
 		Files.createDirectories(testFilePath.getParent());
 		Files.write(testFilePath, testBytes, StandardOpenOption.CREATE);
-		(new ObjectMapper()).writeValue(testMetaPath.toFile(), new FileMetaData(name));
+		(new ObjectMapper()).writeValue(testMetaPath.toFile(), new FileMetaData(name, MediaType.OCTET_STREAM.toString()));
 
 		// read data back
 		ByteBuffer byteBuffer = ByteBuffer.allocate(testByteCount);
@@ -89,5 +90,18 @@ public class FileSystemStorageProviderTest
 
 		Assert.assertArrayEquals("Expect file content to be read from disk correctly", testBytes, byteBuffer.array());
 		Assert.assertEquals("Expect resource name to be read back correctly", name, resource.getName());
+	}
+
+	@Test
+	public void mediaTypeIsPreserved()
+	{
+		String resourceName = "TestResource";
+		String testFileContent = "<h1>HELLO WORLD</h1>";
+		BinaryResource testResource = new BinaryResource(resourceName, testFileContent.getBytes(StandardCharsets.UTF_8), MediaType.HTML_UTF_8.toString());
+
+		this.fileSystemStorageProvider.saveResource(testResource);
+
+		Resource fileResource = this.fileSystemStorageProvider.getResource(testResource.getId());
+		Assert.assertEquals("Expect media type to be html", MediaType.HTML_UTF_8.toString(), fileResource.getMediaType());
 	}
 }
